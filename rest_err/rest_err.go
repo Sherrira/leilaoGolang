@@ -14,7 +14,7 @@ type Causes struct {
 	Message string `json:"message"`
 }
 
-func (*r *RestErr) Error() string {
+func (r *RestErr) Error() string {
 	return r.Message
 }
 
@@ -23,7 +23,7 @@ func NewBadRequestError(message string) *RestErr {
 		Message: message,
 		Err:     "bad_request",
 		Code:    http.StatusBadRequest,
-		Causes: nil,
+		Causes:  nil,
 	}
 }
 
@@ -32,7 +32,7 @@ func NewInternalServerError(message string) *RestErr {
 		Message: message,
 		Err:     "internal_server_error",
 		Code:    http.StatusInternalServerError,
-		Causes: nil,
+		Causes:  nil,
 	}
 }
 
@@ -41,6 +41,6 @@ func NewNotFoundError(message string) *RestErr {
 		Message: message,
 		Err:     "not_found",
 		Code:    http.StatusNotFound,
-		Causes: nil,
+		Causes:  nil,
 	}
 }
