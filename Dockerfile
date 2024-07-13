@@ -1,13 +1,15 @@
-FROM golang:1.22 as build
-WORKDIR /app
-COPY . .
-RUN go mod download
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o service ./cmd/auction
+FROM golang:1.22
 
-# FROM scratch
-FROM alpine:latest
-RUN apk add --no-cache bash
 WORKDIR /app
-COPY ./cmd/auction/.env .
-COPY --from=build /app/service .
-ENTRYPOINT ["./service"]
+
+COPY go.mod ./
+COPY go.sum ./
+RUN go mod download
+
+COPY . .
+
+RUN go build -o /app/auction cmd/auction/main.go
+
+EXPOSE 8080
+
+ENTRYPOINT ["/app/auction"]

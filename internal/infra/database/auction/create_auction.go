@@ -2,7 +2,6 @@ package auction
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/Sherrira/leilaoGolang/configuration/logger"
 	"github.com/Sherrira/leilaoGolang/internal/entity/auction_entity"
@@ -43,7 +42,7 @@ func (ar *AuctionRepository) CreateAuction(ctx context.Context, auction *auction
 
 	_, err := ar.Collection.InsertOne(ctx, auctionMongo)
 	if err != nil {
-		msg := fmt.Sprintf("error creating auction", err)
+		msg := "error creating auction"
 		logger.Error(msg, err)
 		return internal_error.NewInternalServerError(msg)
 	}
