@@ -2,11 +2,15 @@ package auction
 
 import (
 	"context"
+	"os"
+	"time"
 
 	"github.com/Sherrira/leilaoGolang/configuration/logger"
 	"github.com/Sherrira/leilaoGolang/internal/entity/auction_entity"
 	"github.com/Sherrira/leilaoGolang/internal/internal_error"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type AuctionEntityMongo struct {
@@ -47,5 +51,31 @@ func (ar *AuctionRepository) CreateAuction(ctx context.Context, auction *auction
 		return internal_error.NewInternalServerError(msg)
 	}
 
+	interval := ar.GetAuctionInterval()
+
+	go func(auctionId string) {
+		select {
+		case <-time.After(interval):
+			filter := bson.M{"_id": auctionId}
+			update := bson.M{"$set": bson.M{"status": auction_entity.Completed}}
+			_, err := ar.Collection.UpdateOne(context.Background(), filter, update, options.Update().SetUpsert(false))
+			if err != nil {
+				logger.Error("Failed to close auction", err)
+			}
+		case <-ctx.Done():
+			return
+		}
+	}(auction.Id)
+
 	return nil
+}
+
+func (ar *AuctionRepository) GetAuctionInterval() time.Duration {
+	durationStr := os.Getenv("AUCTION_INTERVAL")
+	duration, err := time.ParseDuration(durationStr)
+	if err != nil {
+		logger.Error("error parsing duration, returning default...", err)
+		return time.Minute * 5
+	}
+	return duration
 }
