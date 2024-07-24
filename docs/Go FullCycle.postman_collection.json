@@ -1,0 +1,88 @@
+{
+	"info": {
+		"_postman_id": "f73e7b21-0727-4ca2-aa93-ee18822dede1",
+		"name": "Go FullCycle",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7748187"
+	},
+	"item": [
+		{
+			"name": "/auctions",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"product_name\": \"prod-teste-1\",\n    \"category\": \"carros\",\n    \"description\": \"qlqr coisa de carros\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/auctions",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auctions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/auctions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/auctions?status=0",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auctions"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/bid",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_id\": \"18ab66ba-6c2e-4917-b9fa-5ae47018b1d3\",\n    \"auction_id\": \"18ab66ba-6c2e-4917-b9fa-5ae47018b1d3\",\n    \"amount\": 1000.00\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/bid",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"bid"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
